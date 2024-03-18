@@ -79,6 +79,23 @@ class RSA:
         gcd, x, y = RSA.extended_gcd(e, phi_n)
         return x % phi_n
 
+     # Function to encrypt plaintext using public key (e, n)
+    @staticmethod
+    def encrypt(plaintext, e, n):
+        # Encrypt each character in plaintext using modular exponentiation 
+        # Converts each char to its Unicode point where the chars Unicode point is raised to the power of "e" modulo "n"
+        ciphertext = [pow(ord(char), e, n) for char in plaintext]
+        return ciphertext
+
+    # Function to decrypt ciphertext using private key (d, n)
+    @staticmethod
+    def decrypt(ciphertext, d, n):
+        # Decrypt each character in ciphertext using modular exponentiation
+        # Converts each char to its Unicode point where the chars Unicode point is raised to the power of "d" modulo "n"
+        plaintext = ''.join([chr(pow(char, d, n)) for char in ciphertext])
+        return plaintext
+
+
 # Creating an instance of the LCGPseudoRandomGenerator class.
 lcg = LCGPseudoRandomGenerator()
 
@@ -101,5 +118,15 @@ d = RSA.calculate_d(e, phi_n)
 print("p:", p)
 print("q:", q)
 print("n:", n)
-print("e:", e)
-print("d:", d)
+print("e (Public Key):", e)
+print("d (Private Key):", d)
+
+# Example usage of encryption and decryption
+message = "Hello, world!"
+print("Original message:", message)
+
+encrypted_message = RSA.encrypt(message, e, n)
+print("Encrypted message:", encrypted_message)
+
+decrypted_message = RSA.decrypt(encrypted_message, d, n)
+print("Decrypted message:", decrypted_message)
