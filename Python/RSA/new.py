@@ -4,13 +4,14 @@ class RSA:
 
     @staticmethod
     def factorize_n(n):
-        # Function to factorize n into p and q.
-        # For demonstration, you can use external libraries or tools to factorize.
-        # Replace the below with the actual factors of n.
         from sympy import factorint
-        factors = factorint(n)
-        p, q = list(factors.keys())
-        return p, q
+        factors = factorint(n)  # This returns a dictionary of {prime: exponent}
+        primes = list(factors.keys())
+        if len(primes) == 2:
+            return primes[0], primes[1]
+        else:
+            raise ValueError(f"Factorization failed or did not return exactly two factors: {primes}")
+
 
     @staticmethod
     def calculate_phi_n(p, q):
