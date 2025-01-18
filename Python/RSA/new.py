@@ -2,15 +2,19 @@ class RSA:
     def __init__(self):
         pass
 
-    @staticmethod
+     @staticmethod
     def factorize_n(n):
-        from sympy import factorint
-        factors = factorint(n)  # This returns a dictionary of {prime: exponent}
+        from sympy import factorint, isprime
+        if isprime(n):
+            raise ValueError(f"n is prime: {n}")
+        factors = factorint(n)  # Returns {prime: exponent}
         primes = list(factors.keys())
-        if len(primes) == 2:
+        if len(primes) == 2 and all(factors[p] == 1 for p in primes):  # Ensure two distinct primes
             return primes[0], primes[1]
         else:
-            raise ValueError(f"Factorization failed or did not return exactly two factors: {primes}")
+            raise ValueError(
+                f"Factorization failed or n is not a product of exactly two primes: {factors}"
+            )
 
 
     @staticmethod
